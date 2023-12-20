@@ -16,14 +16,15 @@ class YooKassaIntegration:
         self.auth = (shop_id, secret_key)
 
     def create_payment(self, amount, currency="RUB", return_url="https://your-return-url.com"):
-            """
+        """
         create payment
 
         :param self: self
         :param amount: amount
         :param currency: currency
         :param return_url: url
-        :return: payment"""
+        :return: payment
+        """
         headers = {"Idempotence-Key": "your_unique_key"}  # Generate a unique key for each transaction
         payload = {
             "amount": {
