@@ -1,5 +1,5 @@
 
-# Telegram Bot Parser - README
+# Telegram GRABBER Bot - README
 
 ## Overview
 This Telegram Bot Parser is designed to interact with users, process channel data, and integrate with YooKassa for payment processing. It's built using Python and incorporates several modules for its operation.
