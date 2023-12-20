@@ -1,7 +1,5 @@
 import pymysql
 import pymysql.cursors
-from pyrogram import Client, filters
-from pyrogram.types import Message
 from config import host, user, password, db_name, bot_token
 
 # Настройка подключения к базе данных
@@ -11,8 +9,6 @@ connection = pymysql.connect(host=host,
                              password=password,
                              database=db_name,
                              cursorclass=pymysql.cursors.DictCursor)
-
-app = Client("my_bot", bot_token=bot_token)
 
 # Функции для работы с базой данных
 async def add_user_to_db(chat_id):
