@@ -31,6 +31,13 @@ message = Message
 # Команда для запуска бота
 @app.on_message(filters.command("start"))
 async def start(client, message: Message):
+    """
+    start
+
+    :param client: client
+    :param message: message
+    :return: message and add_user_to_db
+    """
     await message.reply("Bot is running. Use the keyboard below:", reply_markup=ReplyKeyboardMarkup(keyboard, resize_keyboard=True))
     chat_id = message.chat.id
     await add_user_to_db(chat_id)
@@ -38,6 +45,13 @@ async def start(client, message: Message):
 
 #НОРМАЛИЗАЦИЯ СЛОВ
 def normalize_word(word, language):
+    """
+    word normalization
+
+    :param word: word
+    :param language: language
+    :return: word
+    """
     if language == 'english':
         return lemmatizer.lemmatize(word.lower())
     elif language == 'russian':
@@ -55,6 +69,13 @@ keyboard = [
 
 @app.on_message(filters.command("add_channel") & filters.private)
 async def add_channel(client, message: Message):
+    """
+    add channel
+
+    :param client: client
+    :param message: message
+    :return: message and add_user_status
+    """
     user_id = message.from_user.id
     await add_user_status(1, user_id)
     await message.reply("Please send me the name/names of the channel/channels.\n Format: @channel1;@channel2")
@@ -63,6 +84,13 @@ async def add_channel(client, message: Message):
 # УБРАТЬ КАНАЛ
 @app.on_message(filters.command("remove_channel"))
 async def remove_channel(client, message: Message):
+    """
+    remove channel
+
+    :param client: client
+    :param message: message
+    :return: message and add_user_status
+    """
     user_id = message.from_user.id
     await add_user_status(-1, user_id)
     await message.reply("Write channel")
@@ -70,6 +98,13 @@ async def remove_channel(client, message: Message):
 # ПАДПИСАЦА
 @app.on_message(filters.command("subscribe"))
 async def subscribe(client, message: Message):
+    """
+    subscribe
+
+    :param client: client
+    :param message: message
+    :return: message
+    """
     chat_id = message.from_user.id
     sub = await read_sub_info(chat_id)
     if sub == 0:
@@ -81,6 +116,13 @@ async def subscribe(client, message: Message):
 # ОТПИСАТЬСЯ
 @app.on_message(filters.command("unsubscribe"))
 async def unsubscribe(client, message: Message):
+    """
+    unsubscribe
+
+    :param client: client
+    :param message: message
+    :return: message
+    """
     chat_id = message.from_user.id
     sub = await read_sub_info(chat_id)
     if sub == 1:
@@ -92,6 +134,13 @@ async def unsubscribe(client, message: Message):
 # ДОБАВИТЬ KEYWORD
 @app.on_message(filters.command("add_keyword"))
 async def add_keyword(client, message: Message):
+    """
+    add keyword
+
+    :param client: client
+    :param message: message
+    :return: message and add_user_status
+    """
     user_id = message.from_user.id
     await add_user_status(2, user_id)
     await message.reply("Please send me the keyword/keywords \n Format: keyword1;keyword2")
@@ -99,6 +148,13 @@ async def add_keyword(client, message: Message):
 # УДАЛИТЬ KEYWORD
 @app.on_message(filters.command("remove_keyword"))
 async def remove_keyword(client, message: Message):
+    """
+    remove keyword
+
+    :param client: client
+    :param message: message
+    :return: message and add_user_status
+    """
     user_id = message.from_user.id
     await add_user_status(-2, user_id)
     await message.reply("Write keyword")
@@ -106,6 +162,13 @@ async def remove_keyword(client, message: Message):
 # СПИСОК KEYWORDS И КАНАЛОВ
 @app.on_message(filters.command("list"))
 async def list_channels_keywords(client, message: Message):
+    """
+    list channels keywords
+
+    :param client: client
+    :param message: message
+    :return: message
+    """
     chat_id = message.chat.id
     channels_str = await read_channels_info(chat_id)
     keywords_str = await read_keywords_info(chat_id)
@@ -117,6 +180,12 @@ async def list_channels_keywords(client, message: Message):
 import re
 
 async def contains_keyword(text, chat_id):
+    """
+    contains keyword
+
+    :param text: text
+    :return: func
+    """
     if not text:
         return False
 
@@ -140,6 +209,13 @@ async def contains_keyword(text, chat_id):
 ########################################################################################
 
 async def forward_messages_from_channel_to_bot(channel_id, bot_chat_id):
+    """
+    forward messages from channel to bot
+
+    :param channel_id: channel id
+    :param bot_chat_id: bot chat id
+    :return: forward_messages
+    """
     async for message in app.get_chat_history(channel_id, limit=10):
         if await contains_keyword(message.text, bot_chat_id):
             await app.forward_messages(chat_id=bot_chat_id, from_chat_id=channel_id, message_ids=[message.id])
@@ -147,6 +223,13 @@ async def forward_messages_from_channel_to_bot(channel_id, bot_chat_id):
 
 @app.on_message(filters.command("parse"))
 async def check_all_channels(client, message: Message):
+    """
+    check all channales
+
+    :param client: client
+    :param message: message
+    :return: forward_messages_from_channel_to_bot
+    """
     chat_id = message.chat.id
     channel_ids = await read_channels_info(chat_id)
     for channel_id in channel_ids.split(";"):
@@ -161,6 +244,13 @@ async def check_all_channels(client, message: Message):
 # Основной обработчик сообщений
 @app.on_message(filters.private & ~filters.command("add"))
 async def handle_message(client, message: Message):
+    """
+    handle message
+
+    :param client: client
+    :param message: message
+    :return: message and func
+    """
     user_id = message.from_user.id
     state = await read_status_info(user_id)
     print(state)
