@@ -16,6 +16,11 @@ app = Client("my_bot", bot_token=bot_token)
 
 # Функции для работы с базой данных
 async def add_user_to_db(chat_id):
+    """
+    add user to data base
+
+    :param chat_id: chat id
+    """
     try:
         with connection.cursor() as cursor:
             sql = "INSERT INTO userid (id) VALUES (%s) ON DUPLICATE KEY UPDATE id = id"
@@ -25,6 +30,12 @@ async def add_user_to_db(chat_id):
         print(f"Error adding user to database: {e}")
 
 async def add_user_status(state, chat_id):
+    """
+    add user status
+
+    :param state: status
+    :param chat_id: chat id
+    """
     try:
         with connection.cursor() as cursor:
             sql = "UPDATE userid SET status = %s WHERE id = %s "
@@ -34,6 +45,12 @@ async def add_user_status(state, chat_id):
         print(f"Error adding user to database: {e}")
 
 async def add_channel_to_db(channel, chat_id):
+    """
+    add channel to data base
+
+    :param channel: channel
+    :param chat_id: chat id
+    """
     try:
         with connection.cursor() as cursor:
             sql = "UPDATE userid SET channels = %s WHERE id = %s "
@@ -43,6 +60,12 @@ async def add_channel_to_db(channel, chat_id):
         print(f"Error adding user to database: {e}")
 
 async def add_keyword_to_db(channel, chat_id):
+    """
+    add keyword to data base
+
+    :param channel: channel
+    :param chat_id: chat id
+    """
     try:
         with connection.cursor() as cursor:
             sql = "UPDATE userid SET keywords = %s WHERE id = %s "
@@ -52,6 +75,12 @@ async def add_keyword_to_db(channel, chat_id):
         print(f"Error adding user to database: {e}")
 
 async def add_payment_to_db(sub, chat_id):
+    """
+    add payment to data base
+
+    :param sub: subscriber
+    :param chat_id: chat id
+    """
     try:
         with connection.cursor() as cursor:
             sql = "UPDATE userid SET sub = '%s' WHERE id = %s"
@@ -61,6 +90,12 @@ async def add_payment_to_db(sub, chat_id):
         print(f"Error updating payment info in database: {e}")
 
 async def read_sub_info(chat_id):
+    """
+    read subscriber information
+
+    :param chat_id: chat id
+    :return: information
+    """
     try:
         with connection.cursor() as cursor:
             sql = "SELECT `sub` FROM usersinfo.userid WHERE `id` = %s"
@@ -75,6 +110,12 @@ async def read_sub_info(chat_id):
         return None
     
 async def read_status_info(chat_id):
+    """
+    read status information
+
+    :param chat_id: chat id
+    :return: information
+    """
     try:
         with connection.cursor() as cursor:
             sql = "SELECT `status` FROM usersinfo.userid WHERE `id` = %s"
@@ -89,6 +130,12 @@ async def read_status_info(chat_id):
         return None
 
 async def read_channels_info(chat_id):
+    """
+    read channels information
+
+    :param chat_id: chat id
+    :return: information
+    """
     try:
         with connection.cursor() as cursor:
             sql = "SELECT `channels` FROM usersinfo.userid WHERE `id` = %s"
@@ -103,6 +150,12 @@ async def read_channels_info(chat_id):
         return None
 
 async def read_keywords_info(chat_id):
+    """
+    read keywords information
+
+    :param chat_id: chat id
+    :return: information
+    """
     try:
         with connection.cursor() as cursor:
             sql = "SELECT `keywords` FROM usersinfo.userid WHERE `id` = %s"
@@ -117,6 +170,12 @@ async def read_keywords_info(chat_id):
         return None
     
 async def find_chat_id_by_payment_id(payment_id):
+    """
+    find chat id by payment id
+
+    :param payment_id: payment id
+    :return: chat id
+    """
     with connection.cursor() as cursor:
         try:
             cursor.execute("SELECT chat_id FROM payments WHERE payment_id = %s", (payment_id,))
