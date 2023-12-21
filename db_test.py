@@ -24,9 +24,12 @@ async def test_add_user_to_db_exception():
     err = '''Error adding user to database: (1366, "Incorrect integer value: '' for column 'id' at row 1")'''
     chat_id=''
 
+    with patch('db.add_user_to_db', mock_connection):
+        await add_user_to_db(chat_id)
 
     with pytest.raises(Exception) as ex:
-        assert add_user_to_db(chat_id) == err
+        await add_user_to_db(chat_id)
+        assert err in str(ex.value)
 
     mock_cursor.execute.assert_not_called()
     mock_connection.commit.assert_not_called()
