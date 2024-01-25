@@ -23,7 +23,7 @@ morph = MorphAnalyzer()
 
 api_id = api_id     # Замените на ваш Telegram API ID
 api_hash = api_hash # Замените на ваш Telegram API Hash
-bot_token = '6776409787:AAEOHAIOpKMdTK9dFhQVJRLB09c3lqd5-HQ'
+bot_token = 'ur token'
 app = Client("grabber", api_id=api_id, api_hash=api_hash)
 message = Message
 
